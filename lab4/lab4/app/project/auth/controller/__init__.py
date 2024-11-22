@@ -1,0 +1,21 @@
+from .orders.shop_controller import ShopController
+from .orders.product_category_controller import ProductCategoryController
+from .orders.employee_position_controller import EmployeePositionController
+from .orders.manufacturing_company_controller import ManufacturingCompanyController
+from .orders.delivery_type_controller import DeliveryTypeController
+from .orders.client_controller import ClientController
+from .orders.employee_controller import EmployeeController
+from .orders.product_controller import ProductController
+from .orders.shop_product_receiving_controller import ShopProductReceivingController
+from .orders.client_product_delivery_controller import ClientProductDeliveryController
+
+shop_controller = ShopController()
+product_category_controller = ProductCategoryController()
+employee_position_controller = EmployeePositionController()
+manufacturing_company_controller = ManufacturingCompanyController()
+delivery_type_controller = DeliveryTypeController()
+client_controller = ClientController()
+employee_controller = EmployeeController()
+product_controller = ProductController()
+shop_product_receiving_controller = ShopProductReceivingController()
+client_product_delivery_controller = ClientProductDeliveryController()
