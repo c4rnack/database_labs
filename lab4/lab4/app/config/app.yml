@@ -5,12 +5,12 @@ COMMON: &common
 development:
   <<: *common
   DEBUG: True
-  SQLALCHEMY_DATABASE_URI: 'mysql://{0}:{1}@localhost/lab4'
+  SQLALCHEMY_DATABASE_URI: 'mysql://{0}:{1}@lab1-database.c386ccw4g9lg.eu-north-1.rds.amazonaws.com:3306/lab4'
 
 production:
   <<: *common
-  SQLALCHEMY_DATABASE_URI: 'mysql://{0}:{1}@localhost/lab4'
+  SQLALCHEMY_DATABASE_URI: 'mysql://{0}:{1}@lab1-database.c386ccw4g9lg.eu-north-1.rds.amazonaws.com:3306/lab4'
 
 ADDITIONAL_CONFIG:
-  MYSQL_ROOT_USER: root
-  MYSQL_ROOT_PASSWORD: IamEvgen2006
+  MYSQL_ROOT_USER: admin
+  MYSQL_ROOT_PASSWORD: awsmysqldb
