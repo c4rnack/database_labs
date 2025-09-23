@@ -18,8 +18,9 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
-            cd /home/ubuntu/lab1/lab4
+            cd /home/ubuntu/lab1
             git pull
+            cd lab4
             source venv/bin/activate
             cd lab4/app
             pip install -r requirements.txt
