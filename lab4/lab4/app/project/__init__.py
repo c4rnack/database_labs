@@ -6,6 +6,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import database_exists, create_database
 
+from flasgger import Swagger
+
 from .auth.route import register_routes
 
 SECRET_KEY = "SECRET_KEY"
@@ -25,6 +27,8 @@ def create_app(app_config: Dict[str, Any], additional_config: Dict[str, Any]) ->
 
     _init_db(app)
     register_routes(app)
+    
+    Swagger(app)
 
     return app
 
