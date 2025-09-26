@@ -11,7 +11,7 @@ client_bp = Blueprint('client', __name__, url_prefix='/client')
 @client_bp.get('')
 def get_all_client() -> Response:
     """
-    Get all client
+    Get all clients
     ---
     tags:
       - Client
