@@ -25,7 +25,7 @@ def get_parameter_from_ssm(parameter_name):
         param = ssm.get_parameter(Name=parameter_name, WithDecryption=True)
         return param["Parameter"]["Value"]
     except botocore.exceptions.ClientError as e:
-        print(f"Error fetching parameter {parameter_name} from ssm: {e}")
+        print(f"Error fetching parameter {parameter_name} from SSM: {e}")
         return None
 
 if __name__ == '__main__':
