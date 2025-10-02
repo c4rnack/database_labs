@@ -20,7 +20,7 @@ FLASK_ENV = "FLASK_ENV"
 ADDITIONAL_CONFIG = "ADDITIONAL_CONFIG"
 
 def get_parameter_from_ssm(parameter_name):
-    ssm = boto3.client('ssm')
+    ssm = boto3.client('ssm', region_name="eu-north-1")
     try:
         param = ssm.get_parameter(Name=parameter_name, WithDecryption=True)
         return param["Parameter"]["Value"]
