@@ -36,16 +36,11 @@ if __name__ == '__main__':
         config_data_dict = yaml.load(yaml_file, Loader=yaml.FullLoader)
         additional_config = config_data_dict[ADDITIONAL_CONFIG]
 
-
         env_config = config_data_dict.get(flask_env)
-        if env_config.get("SQLALCHEMY_DATABASE_URI") is None:
-            env_config["SQLALCHEMY_DATABASE_URI"] = get_parameter_from_ssm("database-link")
-
-        if additional_config.get("MYSQL_ROOT_USER") is None:
-            additional_config["MYSQL_ROOT_USER"] = get_parameter_from_ssm("database-user")
         
-        if additional_config.get("MYSQL_ROOT_PASSWORD") is None:
-            additional_config["MYSQL_ROOT_PASSWORD"] = get_parameter_from_ssm("database-password")
+        env_config["SQLALCHEMY_DATABASE_URI"] = get_parameter_from_ssm("database-link")
+        additional_config["MYSQL_ROOT_USER"] = get_parameter_from_ssm("database-user")
+        additional_config["MYSQL_ROOT_PASSWORD"] = get_parameter_from_ssm("database-password")
         
         if flask_env == DEVELOPMENT:
             config_data = config_data_dict[DEVELOPMENT]
