@@ -4,6 +4,9 @@ import sys
 from waitress import serve
 import yaml
 
+import boto3
+import botocore
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from lab4.app.project import create_app
@@ -16,6 +19,15 @@ PRODUCTION = "production"
 FLASK_ENV = "FLASK_ENV"
 ADDITIONAL_CONFIG = "ADDITIONAL_CONFIG"
 
+def get_parameter_from_ssm(parameter_name):
+    ssm = boto3.client('ssm')
+    try:
+        param = ssm.get_parameter(Name=parameter_name, WithDecryption=True)
+        return param["Parameter"]["Value"]
+    except botocore.exceptions.ClientError as e:
+        print(f"Error fetching parameter {parameter_name} from ssm: {e}")
+        return None
+
 if __name__ == '__main__':
     flask_env = os.environ.get(FLASK_ENV, DEVELOPMENT).lower()
     config_yaml_path = os.path.join(os.getcwd(), 'config', 'app.yml')
@@ -24,6 +36,17 @@ if __name__ == '__main__':
         config_data_dict = yaml.load(yaml_file, Loader=yaml.FullLoader)
         additional_config = config_data_dict[ADDITIONAL_CONFIG]
 
+
+        env_config = config_data_dict.get(flask_env)
+        if env_config.get("SQLALCHEMY_DATABASE_URI") is None:
+            env_config["SQLALCHEMY_DATABASE_URI"] = get_parameter_from_ssm("database-link")
+
+        if additional_config.get("MYSQL_ROOT_USER") is None:
+            additional_config["MYSQL_ROOT_USER"] = get_parameter_from_ssm("database-user")
+        
+        if additional_config.get("MYSQL_ROOT_PASSWORD") is None:
+            additional_config["MYSQL_ROOT_PASSWORD"] = get_parameter_from_ssm("database-password")
+        
         if flask_env == DEVELOPMENT:
             config_data = config_data_dict[DEVELOPMENT]
             create_app(config_data, additional_config).run(host=HOST, port=DEVELOPMENT_PORT, debug=True)

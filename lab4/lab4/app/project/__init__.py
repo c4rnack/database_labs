@@ -2,9 +2,6 @@ import os
 import secrets
 from typing import Dict, Any
 
-import boto3
-import botocore
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import database_exists, create_database
@@ -23,7 +20,7 @@ db = SQLAlchemy()
 todos = {}
 
 def create_app(app_config: Dict[str, Any], additional_config: Dict[str, Any]) -> Flask:
-    #_process_input_config(app_config, additional_config)
+    _process_input_config(app_config, additional_config)
     app = Flask(__name__)
     app.config["SECRET_KEY"] = secrets.token_hex(16)
     app.config = {**app.config, **app_config}
@@ -35,22 +32,11 @@ def create_app(app_config: Dict[str, Any], additional_config: Dict[str, Any]) ->
 
     return app
 
-def get_db_uri(): 
-    ssm = boto3.client("ssm")
-    try:
-        param = ssm.get_parameter(Name="database-link", WithDecryption=True)
-        return param["Parameter"]["Value"]
-    except botocore.exceptions.ClientError as e:
-        print("Error fetching DB URI:", e)
-        return None
-
 def _init_db(app: Flask) -> None:
     db.init_app(app)
 
-    db_uri = get_db_uri()
-
-    if not database_exists(db_uri):
-        create_database(db_uri)
+    if not database_exists(app.config[SQLALCHEMY_DATABASE_URI]):
+        create_database(app.config[SQLALCHEMY_DATABASE_URI])
 
     import lab4.app.project.auth.domain
     with app.app_context(): db.create_all()
