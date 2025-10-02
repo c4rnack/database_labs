@@ -1,1 +1,1 @@
-Special repository to keep laboratory works.
+Special repository to keep database laboratory works.
