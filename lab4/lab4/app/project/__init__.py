@@ -23,7 +23,7 @@ db = SQLAlchemy()
 todos = {}
 
 def create_app(app_config: Dict[str, Any], additional_config: Dict[str, Any]) -> Flask:
-    _process_input_config(app_config, additional_config)
+    #_process_input_config(app_config, additional_config)
     app = Flask(__name__)
     app.config["SECRET_KEY"] = secrets.token_hex(16)
     app.config = {**app.config, **app_config}
