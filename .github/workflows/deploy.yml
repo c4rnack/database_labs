@@ -19,7 +19,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
             cd /home/ubuntu/lab1
-            git pull --rebase
+            git pull
             cd lab4
             source venv/bin/activate
             cd lab4/app
